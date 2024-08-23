@@ -20,7 +20,7 @@ pipeline {
 
         stage('Checkout from Git') {
             steps {
-                git credentialsId: 'GITHUB', url: 'https://github.com/cristhiancaldas/devops-frontend.git'
+                git branch: 'main',credentialsId: 'GITHUB', url: 'https://github.com/cristhiancaldas/devops-frontend.git'
             }
         }
         
