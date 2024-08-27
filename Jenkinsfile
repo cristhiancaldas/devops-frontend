@@ -8,6 +8,7 @@ pipeline {
         DOCKER_HUB_LOGIN = credentials('dockerHub')
         IMAGE='app-frontend'
         REGISTRY='crist'
+        SCANNER_HOME = tool 'SonarQubeScanner'
     }
 
     stages {
@@ -21,6 +22,17 @@ pipeline {
         stage('Checkout from Git') {
             steps {
                 git branch: 'main',credentialsId: 'GITHUB', url: 'https://github.com/cristhiancaldas/devops-frontend.git'
+            }
+        }
+
+        stage('SonarQube analysis') {
+            
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                      sh ''' $SCANNER_HOME/bin/sonar-scanner \
+                        -Dsonar.projectName=three-tier-frontend \
+                        -Dsonar.projectKey=three-tier-frontend '''
+                }
             }
         }
         
