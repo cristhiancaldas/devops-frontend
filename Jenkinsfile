@@ -29,9 +29,7 @@ pipeline {
             
             steps {
                 withSonarQubeEnv('SonarQube') {
-                      sh ''' $SCANNER_HOME/bin/sonar-scanner \
-                        -Dsonar.projectName=three-tier-frontend \
-                        -Dsonar.projectKey=three-tier-frontend '''
+                      sh "${SCANNER_HOME}/bin/sonar-scanner"
                 }
             }
         }
