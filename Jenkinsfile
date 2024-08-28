@@ -36,6 +36,14 @@ pipeline {
             }
         }
         
+        stage('Quality Check') {
+            steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'jenkins' 
+                }
+            }
+        }
+
         stage('OWASP Dependency-Check Scan') {
             steps {  
 
