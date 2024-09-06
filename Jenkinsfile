@@ -9,7 +9,7 @@ pipeline {
         IMAGE='app-frontend'
         REGISTRY='crist'
         SCANNER_HOME = tool 'SonarQubeScanner'
-        DOCKER_REPO = "app-backend"
+        DOCKER_REPO = "app-frontend"
     }
 
     stages {
