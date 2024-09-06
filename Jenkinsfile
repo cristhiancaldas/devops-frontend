@@ -78,6 +78,37 @@ pipeline {
                '''
             }
         }
+
+        stage('Checkout Code') {
+            steps {
+                git  branch: 'main' ,credentialsId: 'GITHUB', url: 'https://github.com/cristhiancaldas/kubernetes-Manifests-file.git'
+            }
+        }
+
+        stage('Update Deployment file') {
+            environment {
+                GIT_REPO_NAME = "kubernetes-Manifests-file"
+                GIT_USER_NAME = "cristhiancaldas"
+            }
+            steps {
+                dir('Frontend') {
+                    withCredentials([string(credentialsId: 'githubToken', variable: 'GITHUB_TOKEN')]) {
+                        sh '''
+                            git config user.email "c.caldas.m@gmail.com"
+                            git config user.name "cristhiancaldas"
+                            BUILD_NUMBER=${BUILD_NUMBER}
+                            echo $BUILD_NUMBER
+                            imageTag=$(grep -oP '(?<=app-frontend:)[^ ]+' deployment.yaml)
+                            echo $imageTag
+                            sed -i "s/${DOCKER_REPO}.*/${DOCKER_REPO}:${BUILD_NUMBER}/g" deployment.yaml
+                            git add deployment.yaml
+                            git commit -m "Update deployment Image Front to version \${BUILD_NUMBER}"
+                            git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                        '''
+                    }
+                }
+            }
+        }      
   
     }
 }
