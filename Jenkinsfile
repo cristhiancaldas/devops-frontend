@@ -5,7 +5,7 @@ pipeline {
         nodejs 'nodejs'
     }
    environment {
-        DOCKER_HUB_LOGIN = credentials('dockerHub')
+        DOCKER_HUB_LOGIN = credentials('docker-hub-token')
         IMAGE='app-frontend'
         REGISTRY='crist'
         SCANNER_HOME = tool 'SonarQubeScanner'
@@ -40,7 +40,7 @@ pipeline {
         stage('Quality Check') {
             steps {
                 script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'jenkins' 
+                    waitForQualityGate abortPipeline: false, credentialsId: 'token-sonar' 
                 }
             }
         }
