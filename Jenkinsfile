@@ -31,8 +31,8 @@ pipeline {
             steps {
                 withSonarQubeEnv('SonarQube') {
                       sh ''' $SCANNER_HOME/bin/sonar-scanner \
-                        -Dsonar.projectName=three-tier-frontend \
-                        -Dsonar.projectKey=three-tier-frontend '''
+                        -Dsonar.projectName=app-frontend \
+                        -Dsonar.projectKey=app-frontend '''
                 }
             }
         }
@@ -40,7 +40,7 @@ pipeline {
         stage('Quality Check') {
             steps {
                 script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'token-sonar' 
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token' 
                 }
             }
         }
